@@ -9,6 +9,91 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Tipos_sanguineos {
+  id         Int      @id @default(autoincrement())
+  tipo       String   @unique
+  fator      String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  pessoas    Pessoas[]
+}
+
+model Estados {
+  id         Int      @id @default(autoincrement())
+  nome       String   @unique
+  sigla      String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  cidades    Cidades[]
+}
+
+model Cidades {
+  id         Int      @id @default(autoincrement())
+  nome       String   @unique
+  estado_id  Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  estado     Estados  @relation(fields: [estado_id], references: [id])
+  pessoas    Pessoas[]
+  locais_coleta Locais_coleta[]
+
+  @@index([estado_id])
+}
+
+model Pessoas {
+  id          Int      @id @default(autoincrement())
+  nome        String   
+  rua         String
+  numero      String
+  complemento String
+  rg          String
+  cidade_id   Int
+  tipo_id     Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  cidade      Cidades  @relation(fields: [cidade_id], references: [id])
+  tipo        Tipos_sanguineos @relation(fields: [tipo_id], references: [id])
+  doacoes     Doacoes[]
+
+  @@index([cidade_id])
+  @@index([tipo_id])
+}
+
+model Locais_coleta {
+  id          Int      @id @default(autoincrement())
+  nome        String   @unique
+  rua         String
+  numero      String
+  complemento String
+  cidade_id   Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  cidade      Cidades  @relation(fields: [cidade_id], references: [id])
+  doacoes     Doacoes[]
+
+  @@index([cidade_id])
+}
+
+model Doacoes {
+  id         Int      @id @default(autoincrement())
+  pessoa_id  Int      
+  local_id   Int
+  data       DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  pessoa     Pessoas  @relation(fields: [pessoa_id], references: [id])
+  local      Locais_coleta @relation(fields: [local_id], references: [id])
+
+  @@index([pessoa_id])
+  @@index([local_id])
 }
