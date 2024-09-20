@@ -3,11 +3,11 @@ import { client } from '../../database/client.js';
 export class InsertStateController {
     async handle(request, response) {
         try {
-            const { name, uf } = request.body;
+            const { nome, sigla } = request.body;
             const state = await client.estados.create({
                 data: {
-                    nome: name,
-                    uf: uf
+                    nome: nome,
+                    sigla: sigla
                 }
             });
             return response.json(state);

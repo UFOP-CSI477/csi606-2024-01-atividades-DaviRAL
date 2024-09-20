@@ -3,7 +3,7 @@ import { client } from '../../database/client.js';
 export class GetStateByNameController {
     async handle(request, response) {
         try {
-            const { nome } = request.query; 
+            const { nome } = request.params; 
 
             if (!nome) {
                 return response.status(400).json({ error: 'Nome query parameter is required' });
@@ -11,10 +11,7 @@ export class GetStateByNameController {
 
             const state = await client.estados.findFirstOrThrow({
                 where: {
-                    nome:{
-                        equals: nome,
-                        mode: 'insensitive'
-                    }
+                    nome:nome
                 }
             });
             console.log(state);

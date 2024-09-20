@@ -9,7 +9,7 @@ export class DeleteStateController {
                     id: Number(id)
                 }
             });
-            return response.json(state);
+            return response.status(204).send();
         } catch (error) {
             console.error(error);
             return response.status(500).json({ error: 'Internal Server Error' });
