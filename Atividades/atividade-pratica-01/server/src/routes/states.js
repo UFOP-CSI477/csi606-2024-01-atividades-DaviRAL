@@ -19,7 +19,7 @@ statesRouter.get("/states", getAllStates.handle)
 statesRouter.get("/states/:id", getStateById.handle)
 statesRouter.get("/states/nome/:nome", getStateByName.handle);
 statesRouter.post("/states", insertState.handle)
-statesRouter.put("/states/:id", updateState.handle)
+statesRouter.put("/states", updateState.handle)
 statesRouter.delete("/states/:id", deleteState.handle)
 
 export {statesRouter}

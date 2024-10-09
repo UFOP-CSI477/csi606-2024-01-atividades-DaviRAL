@@ -6,11 +6,13 @@ import { bloodTypeRouter } from './routes/blood_type.js'
 import { personsRouter } from './routes/persons.js'
 import { collectionLocalsRouter } from './routes/collection_locals.js'
 import { donationsRouter } from './routes/donation.js'
+import cors from 'cors'
 
 const PORT = 3000
 const server = express()
 
 server.use(express.json())
+server.use(cors())
 
 server.use(mainRouter)
 server.use(statesRouter)   
